@@ -228,18 +228,60 @@ end
 
 ```
 ; Для червоних пастухів
-if count shepherds2-on neighbors >= gang-size and ((random 99) + 1 <= kill-chanse)
-[
-  print "red shepherd died"
-  die
-]
+  ask shepherds1
+  [
+    ifelse carried-sheep = nobody
+    [
+      ifelse sqrt(((homex - xcor) ^ 2) + ((homey - ycor) ^ 2)) > 5
+      [search-for-sheep]
+      [
+        wiggle
+        fd 1
+      ]
+    ]     ;; find a sheep and pick it up
+    [
+      ifelse found-herd?
+      [ find-empty-spot ]  ;; find an empty spot to drop the sheep
+      [ find-new-herd ]
+    ]  ;; find a herd to drop the sheep in
+
+    if carried-sheep != nobody
+    ;; bring my sheep to where I just moved to
+    [ ask carried-sheep [ move-to myself ] ]
+
+    if count shepherds2-on neighbors >= gang-size and ((random 99) + 1 <= kill-chanse)
+    [
+      print "red shepherd died"
+      die
+
 
 ; Аналогічно для синіх пастухів
-if count shepherds1-on neighbors >= gang-size and ((random 99) + 1 <= kill-chanse)
-[
-  print "blue shepherd died"
-  die
-]
+  ask shepherds1
+  [
+    ifelse carried-sheep = nobody
+    [
+      ifelse sqrt(((homex - xcor) ^ 2) + ((homey - ycor) ^ 2)) > 5
+      [search-for-sheep]
+      [
+        wiggle
+        fd 1
+      ]
+    ]     ;; find a sheep and pick it up
+    [
+      ifelse found-herd?
+      [ find-empty-spot ]  ;; find an empty spot to drop the sheep
+      [ find-new-herd ]
+    ]  ;; find a herd to drop the sheep in
+
+    if carried-sheep != nobody
+    ;; bring my sheep to where I just moved to
+    [ ask carried-sheep [ move-to myself ] ]
+
+    if count shepherds2-on neighbors >= gang-size and ((random 99) + 1 <= kill-chanse)
+    [
+      print "red shepherd died"
+      die
+
 
 ```
 
